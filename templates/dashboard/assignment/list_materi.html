@@ -1,0 +1,49 @@
+{% extends "snippets/base.html" %}
+
+
+{% block  content %}
+<div id="main-content">
+    <div class="card">
+        <section id="basic-vertical-layouts">
+            <div class="row">
+                <div class="col-md-12 col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><a href="#">{{data}}</a></h3>
+                            <a href="{% url 'add-materi' pk=data.id %}" class="btn btn-success btn-sm">Add Materi</a>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <!--                                <div class="row mb-4">-->
+                                <!--                                    <div class="col-md-8">-->
+                                <!--                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet aperiam, consequuntur eligendi eos iure laboriosam minus, molestias necessitatibus neque nihil nisi obcaecati odit quasi quidem temporibus unde ut vero voluptates.-->
+                                <!--                                        <hr>-->
+                                <!--                                    </div>-->
+                                <!--                                    <div class="col-md-4">-->
+                                <!--                                        <a href="#" class="btn btn-outline-success btn-sm">Detail</a>-->
+                                <!--                                    </div>-->
+                                <!--                                </div>-->
+
+                                {% for x in materi %}
+                                <div class="row mb-4">
+                                    <div class="col-md-8">
+                                        <p><b>{{x.title}}</b></p>
+                                        {{x.materi|truncatewords:50}}
+                                        <hr>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a href="{% url 'add-question' pk=x.id %}" class="btn btn-outline-success btn-sm">Detail</a>
+                                        <h3>{{forloop.counter}}</h3>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}

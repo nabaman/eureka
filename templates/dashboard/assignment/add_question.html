@@ -1,0 +1,164 @@
+{% extends "snippets/base.html" %}
+
+{% block content %}
+<div id="main-content">
+    <div class="card">
+        <section id="basic-vertical-layouts">
+            <div class="row match-height">
+                <div class="col-md-8 col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="{% url 'list-materi' pk=mat.assignment.id %}"><h4 class="card-title">{{mat.assignment}}</h4></a>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <form class="form form-vertical" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-body">
+                                        <div class="row" id="tampungan">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label><b>{{mat.title}}</b></label>
+                                                    <div style="margin:0px 0px 20px 0px;">
+                                                        {{mat.materi}}
+                                                    </div>
+                                                    <div style="margin-top:1rem">
+
+                                                        {% if mat.gambar.all.count != 0  %}
+                                                            {% for x in mat.gambar.all %}
+                                                            <img style="max-width:100%; max-height:100%" src="{{x.img.url}}"
+                                                                 alt="x.img">
+                                                            {% endfor %}
+                                                        {% endif %}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {% for x in dt %}
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label><b>{{forloop.counter}}. {{x.question}}</b></label>
+                                                    <div style="margin:0px 0px 20px 0px;">
+                                                        <ol type="A">
+                                                            {% for b in x.choices.all  %}
+                                                            	<li>{{b.title}}</li>
+                                                            {% endfor  %}
+                                                        </ol>
+                                                        <p>Answer : <i>{{x.answer.title}}</i></p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+
+                                            <div class="col-12">
+                                                <b>Add Question </b>
+                                            </div>
+                                            <div class="col-12 text-center">
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlTextarea1">Question</label>
+                                                    <textarea name="question" class="form-control" id="exampleFormControlTextarea1"
+                                                              rows="3" placeholder="ex : how to train your dragon"
+                                                              required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 q_type">
+                                                <div class="form-group">
+                                                    <label for="q_type">Question Type</label>
+                                                    <select class="form-select" id="q_type" name="q_type" required>
+                                                        <option value="text">Text</option>
+                                                        <option value="choice">Choice</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 tampungan">
+                                                <div class="form-group">
+                                                    <ol type="A" class="list-ch">
+
+                                                    </ol>
+                                                </div>
+                                            </div>
+                                            <div class="secret" style="display:none">
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="answer" id="lb-answer">Answer</label>
+                                                    <input type="text" id="answer" class="form-control"
+                                                           name="answer" placeholder="" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 d-flex justify-content-end">
+                                                <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                                <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}
+{% block  custom_script %}
+
+<script>
+    var x = $('#q_type')
+    var ch = `<div class="col-10 isian">
+                <div class="form-group">
+                    <label for="contact-info-vertical">Choice</label>
+                    <input type="text" id="isi-ch" class="form-control"
+                     placeholder="">
+                </div>
+              </div>
+              <div class="col-2 isian">
+                <button type="button" class="btn btn-success" id="add-ch">Add Choice</button>
+              </div>
+              `
+    x.change(function() {
+        if (x.val() == 'choice'){
+            $('.tampungan').after(ch)
+            var o = `<select class="form-select" id="answer-ch" name="answer" required>
+                        <option>-</option>
+                     </select>`
+            $('#answer').remove()
+            $('#lb-answer').after(o)
+
+        }
+        else {
+            var j = `<input type="text" id="answer" class="form-control"
+                       name="answer" placeholder="" required>`
+            $('.isian').remove()
+            $('#answer').remove()
+            $('#answer-ch').remove()
+            $('.tampungan').remove()
+            $('.secret').remove()
+            $('#lb-answer').after(j)
+        }
+
+        var k = 0
+         $('#add-ch').click(function(){
+            var isi = $('#isi-ch').val()
+            if (isi != ''){
+                k +=1
+                $('.list-ch').append(`<li>${isi}</li>`)
+                $('#answer-ch').append(`<option value="${isi}">${isi}</option>`)
+                $('#isi-ch').val('')
+                console.log(k)
+                $('.secret').append(`<input type="hidden" name="choices" value="${isi}" />`)
+            }
+    })
+})
+
+
+
+
+
+</script>
+{% endblock custom_script %}
