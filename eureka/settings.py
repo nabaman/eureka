@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 import django_heroku
+import sys
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,6 +25,28 @@ SECRET_KEY = 'y2xw(=h03mnqwev**p8za*k#sg$$sn(9ammg!y94c2jaypgpgu'
 DEBUG_PROPAGATE_EXCEPTIONS = True
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'stream': sys.stdout
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
+    }
+}
 
 ALLOWED_HOSTS = ['*']
 
