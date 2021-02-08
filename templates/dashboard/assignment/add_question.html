@@ -8,50 +8,14 @@
                 <div class="col-md-8 col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{% url 'list-materi' pk=mat.assignment.id %}"><h4 class="card-title">{{mat.assignment}}</h4></a>
+                            <a href="#"><h4 class="card-title">INI NAMA ASSIGNMENT nya</h4></a>
                         </div>
                         <div class="card-content">
                             <div class="card-body">
-                                <form class="form form-vertical" method="post">
+                                <form class="form form-vertical" method="post" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <div class="form-body">
                                         <div class="row" id="tampungan">
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label><b>{{mat.title}}</b></label>
-                                                    <div style="margin:0px 0px 20px 0px;">
-                                                        {{mat.materi}}
-                                                    </div>
-                                                    <div style="margin-top:1rem">
-
-                                                        {% if mat.gambar.all.count != 0  %}
-                                                            {% for x in mat.gambar.all %}
-                                                            <img style="max-width:100%; max-height:100%" src="{{x.img.url}}"
-                                                                 alt="x.img">
-                                                            {% endfor %}
-                                                        {% endif %}
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            {% for x in dt %}
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label><b>{{forloop.counter}}. {{x.question}}</b></label>
-                                                    <div style="margin:0px 0px 20px 0px;">
-                                                        <ol type="A">
-                                                            {% for b in x.choices.all  %}
-                                                            	<li>{{b.title}}</li>
-                                                            {% endfor  %}
-                                                        </ol>
-                                                        <p>Answer : <i>{{x.answer.title}}</i></p>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            {% endfor %}
-
                                             <div class="col-12">
                                                 <b>Add Question </b>
                                             </div>
@@ -61,6 +25,12 @@
                                                     <textarea name="question" class="form-control" id="exampleFormControlTextarea1"
                                                               rows="3" placeholder="ex : how to train your dragon"
                                                               required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="formFileSm">Image</label>
+                                                    <input name="image-materi" class="form-control form-control-sm" id="formFileSm" type="file">
                                                 </div>
                                             </div>
                                             <div class="col-4 q_type">

@@ -43,7 +43,7 @@
 
                         {% for x in assignment %}
                         <tr>
-                            <td><a href="{% url 'list-materi' pk=x.id %}">{{x.title}}</a></td>
+                            <td><a href="{% url 'list-question' pk=x.id %}">{{x.title}}</a></td>
 <!--                            <td>14</td>-->
                             <td>{{x.created_at}}</td>
                             <td>

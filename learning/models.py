@@ -32,7 +32,8 @@ class Materi(models.Model):
         return f'{self.title}'
 
 class Question(models.Model):
-    materi = models.ForeignKey(Materi, on_delete=models.CASCADE, null=True)
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, null=True)
+    img = models.ManyToManyField(ImageMateri)
     chc = (
         ('text','text'),
         ('choice','choice')

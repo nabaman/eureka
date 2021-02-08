@@ -15,14 +15,15 @@ def assignmentView(request):
 
     return render(request,'dashboard/assignment/assignment.html',context)
 
-def listMateri(request,pk):
-    ass_data = Assignment.objects.get(id=pk)
-    materi_data = Materi.objects.filter(assignment=ass_data) 
+def listQuestion(request,pk):
+    as_data = Assignment.objects.get(id=pk)
+    q = Question.objects.filter(assignment=as_data)
     context = {
-        'data':ass_data,
-        'materi':materi_data
+        'dt': q,
+        'ad': as_data
     }
-    return render(request, 'dashboard/assignment/list_materi.html',context)
+    return render(request,'dashboard/assignment/list_question.html',context)
+
 
 def addMateri(request,pk):
     ass_data = Assignment.objects.get(id=pk)
@@ -48,30 +49,48 @@ def createAssignment(request):
     if request.method == 'POST' and request.POST.get('assignment_tittle') is not None:
         title = request.POST.get('assignment_tittle')
         x = Assignment.objects.create(title=title,teacher=request.user.data_teacher)
-        return redirect('list-materi',x.id)
+        return redirect('add-question',x.id)
 
     return render(request,'dashboard/assignment/create_assignment.html')
 
 def addQuestion(request,pk):
-    mat_data = Materi.objects.get(id=pk)
-    q = Question.objects.filter(materi=mat_data)
+    mat_data = Assignment.objects.get(id=pk)
+    q = Question.objects.filter(assignment=mat_data)
     print(request.POST)
     if request.method == 'POST':
         ch = request.POST.getlist('choices')
         answer = request.POST.get('answer')
         question = request.POST.get('question')
+        img = request.FILES.get('image-materi')
         q_type = request.POST.get('q_type')
-        if q_type == 'choice':
+        if q_type == 'choice' and img != None:
+            for z in ch:
+                b = Choice.objects.create(title=z)
+            gbr = ImageMateri.objects.create(img=img)
+            ans = Choice.objects.get(title=answer)
+            x=Question.objects.create(assignment=mat_data,question=question,q_type=q_type,answer=ans)
+            x.choices.add(*Choice.objects.filter(title__in=ch))
+            x.img.add(gbr)
+            return redirect('list-question',pk)
+
+        elif q_type == 'choice' and img == None:
             for z in ch:
                 b = Choice.objects.create(title=z)
             ans = Choice.objects.get(title=answer)
-            x=Question.objects.create(materi=mat_data,question=question,q_type=q_type,answer=ans)
+            x=Question.objects.create(assignment=mat_data,question=question,q_type=q_type,answer=ans)
             x.choices.add(*Choice.objects.filter(title__in=ch))
-            return redirect('add-question',pk)
-        elif q_type == 'text':
+            return redirect('list-question',pk)
+
+        elif q_type == 'text' and img != None:
             ans = Choice.objects.create(title=answer)
-            x=Question.objects.create(materi=mat_data,question=question,q_type=q_type,answer=ans)
-            return redirect('add-question',pk)
+            gbr = ImageMateri.objects.create(img=img)
+            x=Question.objects.create(assignment=mat_data,question=question,q_type=q_type,answer=ans)
+            x.img.add(gbr)
+            return redirect('list-question',pk)
+        elif q_type == 'text' and img == None:
+            ans = Choice.objects.create(title=answer)
+            x = Question.objects.create(assignment=mat_data, question=question, q_type=q_type, answer=ans)
+            return redirect('list-question', pk)
                     
     context = {
         'dt':q,
