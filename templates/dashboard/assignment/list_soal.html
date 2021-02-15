@@ -1,0 +1,79 @@
+{% extends "snippets/base.html" %}
+{% load static%}
+
+{% block  custom_style %}
+<link rel="stylesheet" href="{% static 'assets/vendors/simple-datatables/style.css' %}">
+{% endblock custom_style %}
+{% block  content %}
+<div id="main-content">
+    <div class="page-heading">
+        <div class="page-title">
+            <div class="row mb-4">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <a href="{% url 'buat-soal' %}" class="btn btn-outline-success">BUAT SOAL</a>
+                    <br>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">KUMPULAN SOAL</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-secondary">Kumpulan Soal</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover" id="table1">
+                        <thead>
+                        <tr>
+                            <th>Soal</th>
+<!--                            <th>Total Participant</th>-->
+                            <th>Kategori</th>
+                            <th>Sub Kategori</th>
+                            <th>Tipe Soal</th>
+                            <th>Tingkat Kesulitan</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for x in soal %}
+                        <tr>
+                            <td><a href="{% url 'detail-soal' pk=x.id %}">{{x.question|truncatechars:30}}</a></td>
+<!--                            <td>14</td>-->
+                            <td>{{x.q_kategori.parent}}</td>
+                            <td>{{x.q_kategori}}</td>
+                            <td>{%if x.q_type == 'choice' %}Pilihan Ganda {%else%} Essay {%endif%} </td>
+                            <td>{%if x.level == '1' %} MUDAH {% elif x.level == '2' %} SEDANG {% else %} SULIT {%endif%} </td>
+                            <td>
+                                <a href="#" class="badge bg-light-success">Edit</a>
+                                <a href="#" class="badge bg-light-info">Report</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock content %}
+
+{% block  custom_script %}
+<script src="{% static 'assets/vendors/simple-datatables/simple-datatables.js' %}"></script>
+<script>
+
+    let table1 = document.querySelector('#table1');
+    let dataTable = new simpleDatatables.DataTable(table1);
+
+
+</script>
+{% endblock custom_script %}

@@ -5,10 +5,18 @@ from .views import *
 
 urlpatterns = [
     path('',login_required(dashboardView,login_url='login'), name='dashboard'),
-    path('assignment/',login_required(assignmentView,login_url='login'), name='assignment'),
-    path('create-assignment/',createAssignment, name='create-assignment'),
-    path('list-question/<int:pk>/',listQuestion,name='list-question'),
-    path('add-materi/<int:pk>/', addMateri, name='add-materi'),
-    path('add-question/<int:pk>/',addQuestion, name='add-question')
+    path('kumpulan-soal/',login_required(assignmentView,login_url='login'), name='kumpulan-soal'),
+    path('detail-soal/<int:pk>/',detailSoal,name='detail-soal'),
+    path('buat-soal/',addQuestion, name='buat-soal'),
+    path('list-question/',listQuestion,name='list-question'),
+    path('list-materi/', listMateri, name='list-materi'),
+    path('detail-materi/<int:pk>/', detailMateri, name='detail-materi'),
+    path('add-materi/', addMateri, name='add-materi'),
+    path('add-question/',addQuestion, name='add-question'),
+    path('list-kategori/',listKategori,name='list-kategori'),
+    path('list-sub-kategori/<int:pk>/', listSubKategori, name='list-sub-kategori'),
+    path('tambah-kategori/', createKategori, name='tambah-kategori'),
+    path('tambah-sub-kategori/<int:pk>/', createSubKategori, name='tambah-sub-kategori'),
+    path('sub-kategori/',ajaxSubKategori,name='ajax-sub-kategori')
 ]
 

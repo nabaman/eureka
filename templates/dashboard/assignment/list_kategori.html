@@ -10,14 +10,14 @@
         <div class="page-title">
             <div class="row mb-4">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <a href="{% url 'create-assignment' %}" class="btn btn-outline-success">CREATE ASSIGNMENT</a>
+                    <a href="{% url 'tambah-kategori' %}" class="btn btn-outline-success">TAMBAH KATEGORI</a>
                     <br>
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Assignment</li>
+                            <li class="breadcrumb-item active" aria-current="page">KUMPULAN KATEGORI</li>
                         </ol>
                     </nav>
                 </div>
@@ -26,41 +26,30 @@
         <section class="section">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="text-secondary">List of your current assignment</h3>
+                    <h3 class="text-secondary">KATEGORI</h3>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered table-hover" id="table1">
                         <thead>
                         <tr>
-                            <th>Tittle</th>
-<!--                            <th>Total Participant</th>-->
-                            <th>Created Date</th>
-                            <th>Status</th>
+                            <th>NO</th>
+                            <th>KATEGORI</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
 
-                        {% for x in assignment %}
+                        {% for x in kt %}
                         <tr>
-                            <td><a href="{% url 'list-question' pk=x.id %}">{{x.title}}</a></td>
-<!--                            <td>14</td>-->
-                            <td>{{x.created_at}}</td>
-                            <td>
-
-                                {% if x.status == True  %}
-                                <span class="badge bg-success">Published</span>
-                                {% else %}
-                                <span class="badge bg-danger">Not Published</span>
-                                {% endif %}
-
-                            </td>
+                            <td>{{forloop.counter}}</td>
+                            <td><a href="{% url 'list-sub-kategori' pk=x.id %}">{{x.sub_kategori_name}}</a></td>
                             <td>
                                 <a href="#" class="badge bg-light-success">Edit</a>
                                 <a href="#" class="badge bg-light-info">Report</a>
                             </td>
                         </tr>
                         {% endfor %}
+
 
                         </tbody>
                     </table>
@@ -77,6 +66,7 @@
 
     let table1 = document.querySelector('#table1');
     let dataTable = new simpleDatatables.DataTable(table1);
+
 
 
 </script>

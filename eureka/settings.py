@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'y2xw(=h03mnqwev**p8za*k#sg$$sn(9ammg!y94c2jaypgpgu'
 # DEBUG_PROPAGATE_EXCEPTIONS = True
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

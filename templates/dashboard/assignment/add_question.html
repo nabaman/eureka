@@ -7,38 +7,68 @@
             <div class="row match-height">
                 <div class="col-md-8 col-12">
                     <div class="card">
-                        <div class="card-header">
-                            <a href="#"><h4 class="card-title">INI NAMA ASSIGNMENT nya</h4></a>
-                        </div>
+
                         <div class="card-content">
                             <div class="card-body">
-                                <form class="form form-vertical" method="post" enctype="multipart/form-data">
+                                <form id="q-form" class="form form-vertical" method="post" enctype="multipart/form-data"
+                                      data-sub-kategori-url="{% url 'ajax-sub-kategori' %}">
                                     {% csrf_token %}
                                     <div class="form-body">
                                         <div class="row" id="tampungan">
                                             <div class="col-12">
-                                                <b>Add Question </b>
+                                                <div class="col-4 ">
+                                                    <div class="form-group">
+                                                        <label for="kategori">Kategori Soal</label>
+                                                        <select class="form-select" id="kategori" name="kategori"
+                                                                required>
+                                                            {% for x in kat %}
+                                                            <option value="{{x.sub_kategori_name}}">
+                                                                {{x.sub_kategori_name}}
+                                                            </option>
+                                                            {% endfor %}
+
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-12 text-center">
+                                            <div class="col-12">
+                                                <div class="col-4 ">
+                                                    <div class="form-group">
+                                                        <label for="sub_kategori">Sub Kategori Soal</label>
+                                                        <select class="form-select" id="sub_kategori"
+                                                                name="sub_kategori" required>
+                                                            {% for x in kat.first.question_kategori_set.all %}
+                                                            <option value="{{x.sub_kategori_name}}">
+                                                                {{x.sub_kategori_name}}
+                                                            </option>
+                                                            {% endfor %}
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
                                                 <div class="form-group">
-                                                    <label for="exampleFormControlTextarea1">Question</label>
-                                                    <textarea name="question" class="form-control" id="exampleFormControlTextarea1"
-                                                              rows="3" placeholder="ex : how to train your dragon"
+                                                    <label for="exampleFormControlTextarea1">Pertanyaan</label>
+                                                    <textarea name="question" class="form-control"
+                                                              id="exampleFormControlTextarea1"
+                                                              rows="3" placeholder="contoh : Siapa penemu lampu pijar?"
                                                               required></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <label for="formFileSm">Image</label>
-                                                    <input name="image-materi" class="form-control form-control-sm" id="formFileSm" type="file">
+                                                    <label for="formFileSm">Gambar</label>
+                                                    <input name="image-materi" class="form-control form-control-sm"
+                                                           id="formFileSm" type="file">
                                                 </div>
                                             </div>
                                             <div class="col-4 q_type">
                                                 <div class="form-group">
-                                                    <label for="q_type">Question Type</label>
+                                                    <label for="q_type">Tipe Soal</label>
                                                     <select class="form-select" id="q_type" name="q_type" required>
-                                                        <option value="text">Text</option>
-                                                        <option value="choice">Choice</option>
+                                                        <option value="text">Essay</option>
+                                                        <option value="choice">Pilihan Ganda</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -53,9 +83,22 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <label for="answer" id="lb-answer">Answer</label>
+                                                    <label for="answer" id="lb-answer">Jawaban</label>
                                                     <input type="text" id="answer" class="form-control"
                                                            name="answer" placeholder="" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="col-4 ">
+                                                    <div class="form-group">
+                                                        <label for="level">Tingkat Kesulitan</label>
+                                                        <select class="form-select" id="level" name="level"
+                                                                required>
+                                                            <option value="1">MUDAH</option>
+                                                            <option value="2">SEDANG</option>
+                                                            <option value="3">SULIT</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -75,20 +118,64 @@
         </section>
     </div>
 </div>
+
+<div class="modal fade text-left" id="inlineForm" tabindex="-1"
+     role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+         role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel33">Tambah Materi </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <form action="#">
+                <div class="modal-body">
+                    <label>Email: </label>
+                    <div class="form-group">
+                        <input type="text" placeholder="Email Address"
+                               class="form-control">
+                    </div>
+                    <label>Password: </label>
+                    <div class="form-group">
+                        <input type="password" placeholder="Password"
+                               class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary"
+                            data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button type="button" class="btn btn-primary ml-1"
+                            data-bs-dismiss="modal">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">login</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock content %}
 {% block  custom_script %}
 
 <script>
+
+
     var x = $('#q_type')
     var ch = `<div class="col-10 isian">
                 <div class="form-group">
-                    <label for="contact-info-vertical">Choice</label>
+                    <label for="contact-info-vertical">Pilihan</label>
                     <input type="text" id="isi-ch" class="form-control"
                      placeholder="">
                 </div>
               </div>
               <div class="col-2 isian">
-                <button type="button" class="btn btn-success" id="add-ch">Add Choice</button>
+                <button type="button" class="btn btn-success" id="add-ch">Tambah Pilihan</button>
               </div>
               `
     x.change(function() {
@@ -107,7 +194,7 @@
             $('.isian').remove()
             $('#answer').remove()
             $('#answer-ch').remove()
-            $('.tampungan').remove()
+            $('.list-ch li').remove()
             $('.secret').remove()
             $('#lb-answer').after(j)
         }
@@ -116,15 +203,54 @@
          $('#add-ch').click(function(){
             var isi = $('#isi-ch').val()
             if (isi != ''){
+                var liCount = $('.list-ch li').length
+                if (liCount >= 5){
+                    return alert('pilihan sudah mencapai batas')
+                }
                 k +=1
-                $('.list-ch').append(`<li>${isi}</li>`)
+                $('.list-ch').append(`<li>
+                    <div class="row">
+                    <div class="col-8">${isi}</div>
+                    <div class="col-4"><button class="btn btn-danger btn-sm mb-2" id="btn-del-${k}" type="button">x</button></div>
+                    </div>
+
+                </li>`)
                 $('#answer-ch').append(`<option value="${isi}">${isi}</option>`)
                 $('#isi-ch').val('')
-                console.log(k)
                 $('.secret').append(`<input type="hidden" name="choices" value="${isi}" />`)
+
+        $(`#btn-del-${k}`).click(function(){
+            var z = $(this).parent().parent().parent()
+            aw = z.children().children().first().text()
+            g = $(`#answer-ch option[value="${aw}"]`)
+            hi = $(`.secret input[value="${aw}"]`)
+
+            hi.remove()
+            g.remove()
+            z.remove()
+
+
+        })
             }
+
     })
 })
+
+    $('#kategori').change(function(){
+        var url = $('#q-form').attr('data-sub-kategori-url')
+        var kategori = $(this).val()
+        data = {kategori}
+        $.ajax({
+            url:url,
+            data:data,
+            success: function(d){
+                $('#sub_kategori').html(d)
+            }
+        })
+    })
+
+
+
 
 
 

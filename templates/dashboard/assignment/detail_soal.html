@@ -1,0 +1,59 @@
+{% extends "snippets/base.html" %}
+
+{% block  content %}
+<div id="main-content">
+    <div class="page-heading">
+        <div class="page-title">
+            <div class="row mb-4">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <a href="{% url 'buat-soal' %}" class="btn btn-outline-success">BUAT SOAL</a>
+                    <br>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Detail Soal </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-secondary"></h3>
+                    <h3 class="text-secondary">Level Soal : {%if q.level == '1' %} MUDAH {% elif q.level == '2' %} SEDANG {% else %} SULIT {%endif%}</h3>
+                    <h3 class="text-secondary">Kategori Soal : {{q.q_kategori.parent}}</h3>
+                    <h3 class="text-secondary">Sub Kategori Soal : {{q.q_kategori}}</h3>
+
+                </div>
+                <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <img src="{{q.img.all.first.img.url}}" alt="{{q.img.all.first.img}}" width="100%">
+
+                    </div>
+                    <div class="col-md-8 mt-4">
+                        <h6>{{q.question}}</h6>
+                    </div>
+                    <div class="col-md-8 mt-4">
+                        <ol type="A">
+
+                            {% for x in q.choices.all  %}
+                            	<li>{{x}}</li>
+                            {% endfor  %}
+
+                        </ol>
+                    </div>
+                    <div class="col-md-8 mt-4">
+                        <h6>Answer : <b><i>{{q.answer}}</i></b></h6>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+{% endblock content %}
